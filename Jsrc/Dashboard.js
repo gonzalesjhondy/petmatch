@@ -28,27 +28,31 @@ const Dashboard = () => {
 
     return (
         <SafeAreaView style={styles.continer}>
-            <Text style={{fontSize:20, fontWeight:'bold'}}>
-                Hello, {name.firstname}
-            </Text>
 
-            <TouchableOpacity
+
+
+
+            {/* <Text style={{fontSize:20, fontWeight:'bold'}}>
+                Welcome {name.firstname} 
+            </Text> */}
+
+          {/*   <TouchableOpacity
                 onPress={() => { changePassword()}}
                 style={styles.button}
             >
                 <Text style={{fontSize:20, fontWeight:'bold'}}>
                     Change Password
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity>*/}
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
                 onPress={() => {firebase.auth().signOut()}}
                 style={styles.button}
             >
                 <Text style={{fontSize:20, fontWeight:'bold'}}>
                     Sign Out
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity>  */}
             
         </SafeAreaView>
     )

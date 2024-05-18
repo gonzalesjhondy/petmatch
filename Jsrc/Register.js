@@ -38,80 +38,83 @@ const Register = () => {
         alert(error.message)
     }))
   }
+ 
   return (
-    <View style={styles.continer}>
-        <Text style={{fontWeight:'bold', fontSize:23}}>
-            Register Here..!
-        </Text>
-        <View style={{marginTop:40}}>
+    <View style={styles.container}>
+        <View style={styles.inputWrapper}>
             <TextInput
-                style={styles.TextInput}
+                style={styles.textInput}
                 placeholder='First Name'
                 onChangeText={(firstname) => setFirstname(firstname)}
                 autoCorrect={false}
             />
             <TextInput
-                style={styles.TextInput}
+                style={styles.textInput}
                 placeholder='Last Name'
                 onChangeText={(lastname) => setLastname(lastname)}
                 autoCorrect={false}
             />
             <TextInput
-                style={styles.TextInput}
+                style={styles.textInput}
                 placeholder='Email'
                 onChangeText={(email) => setEmail(email)}
                 autoCapitalize='none'
                 autoCorrect={false}
                 keyboardType='email-address'
-
             />
-
             <TextInput
-                style={styles.TextInput}
-                placeholder='password'
+                style={styles.textInput}
+                placeholder='Password'
                 onChangeText={(password) => setPassword(password)}
                 autoCapitalize='none'
                 autoCorrect={false}
                 secureTextEntry={true}
             />
-
         </View>
         <TouchableOpacity
-            onPress={() => registerUser(email, password ,firstname, lastname, )}
+            onPress={() => registerUser(email, password, firstname, lastname)}
             style={styles.button}
         >
-            <Text style={{fontWeight:'bold', fontSize:22}}>Register</Text>
+            <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
     </View>
-  )
+);
 };
 
 export default Register;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems:'center',
-        marginTop: 100,
-    },
-    TextInput: {
-        paddingTop:20,
-        paddingBottom:10,
-        width: 400,
-        fontSize: 20,
-        borderBottomWidth:1,
-        borderBottomColor:'#000',
-        marginBottom:10,
-        textAlign: 'center'
-    },
-    button:{
-        marginTop:50,
-        height:70,
-        width:250,
-        backgroundColor:'#026efd',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:50,
-
-    }
-})
+container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+},
+inputWrapper: {
+    width: '100%',
+    alignItems: 'center',
+},
+textInput: {
+    width: '80%',
+    fontSize: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#000',
+    marginBottom: 20,
+    textAlign: 'center',
+    padding: 10,
+},
+button: {
+    height: 50,
+    width: 250,
+    backgroundColor: '#026efd',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    marginTop: 20,
+},
+buttonText: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: '#fff',
+},
+});

@@ -26,54 +26,47 @@ const Login = () => {
     }
 
     return (
-        <View>
-            {/* <Text style={{fontWeight: 'bold', fontSize:26 }}>Login</Text> */}
-            <View style={styles.container}>
-                <TextInput
-                    style={styles.inputContainer}
-                    placeholder='Email'
-                    onChangeText={(email) => setEmail(email)}
-                    autoComplete='none'
-                    autoCorrect={false}
-                />
-                <TextInput
-                    style={StyleSheet.inputContainer}
-                    placeholder='Password'
-                    onChangeText={(password) => setPassword(password)}
-                    autoComplete='none'
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                />
-            </View>
+        <View style={styles.container}>
+            <TextInput
+                style={styles.textInput}
+                placeholder='Email'
+                onChangeText={(email) => setEmail(email)}
+                autoComplete='none'
+                autoCorrect={false}
+            />
+            <TextInput
+                style={styles.textInput}
+                placeholder='Password'
+                onChangeText={(password) => setPassword(password)}
+                autoComplete='none'
+                autoCorrect={false}
+                secureTextEntry={true}
+            />
             <TouchableOpacity
                 onPress={() => loginUser(email, password)}
                 style={styles.button}
             >
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
-
             <TouchableOpacity
                 onPress={() => navigation.navigate('Register')}
-                style={{marginTop:20}}
+                style={styles.link}
             >
-                <Text style={{fontWeight:'bold', fontSize:14}}>
+                <Text style={styles.linkText}>
                     Don't have an account? Sign Up here
                 </Text>
             </TouchableOpacity>
-            
             <TouchableOpacity
-                onPress={() => {forgetpassword()}}
+                onPress={() => forgetpassword()}
                 style={styles.link}
             >
                 <Text style={styles.linkText}>
                     Forget Password?
                 </Text>
             </TouchableOpacity>
-
         </View>
-       
-    )
-}
+    );
+};
 
 export default Login;
 
@@ -82,14 +75,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-    },
-    inputContainer: {
-        marginBottom: 40,
-        width: '80%',
+        padding: 20,
     },
     textInput: {
-        paddingTop: 20,
-        paddingBottom: 10,
         width: '100%',
         fontSize: 20,
         borderBottomWidth: 1,
