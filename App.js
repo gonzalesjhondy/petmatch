@@ -124,16 +124,7 @@ function App(){
                   containerStyle={styles.dropdownContainer}
                   style={styles.dropdown}
                   onChangeValue={handleDropdownChange}
-                  // onChangeValue={(items) => {
-                  //   console.log("Dropdown value changed:", value); 
-                  //   if (items === 'profile') {
-                  //     // Handle profile option
-                  //     // console.log('Profile selected');
-                  //   } else if (items === 'logout') {
-                  //     console.log("Logout selected, triggering handleSignOut");
-                  //     handleSignOut();
-                  //   }
-                  // }}
+                  
                 />
               )}
               
