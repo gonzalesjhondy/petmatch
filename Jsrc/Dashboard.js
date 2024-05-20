@@ -31,7 +31,7 @@ const Dashboard = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
                 <Image
-                    source={{ uri: 'https://example.com/profile.jpg' }} // replace with your profile image URL
+                    source={require('../images/profile.png')} // replace with your profile image URL
                     style={styles.profileImage}
                 />
                 <TextInput
@@ -48,12 +48,6 @@ const Dashboard = () => {
                 <TouchableOpacity style={[styles.categoryItem, { backgroundColor: '#FFEBEE' }]}>
                     <Text>Cats</Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity style={[styles.categoryItem, { backgroundColor: '#FFF8E1' }]}>
-                    <Text>Birds</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={[styles.categoryItem, { backgroundColor: '#E8F5E9' }]}>
-                    <Text>Fishes</Text>
-                </TouchableOpacity> */}
             </View>
 
             <ScrollView contentContainerStyle={styles.petList}>

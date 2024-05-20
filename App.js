@@ -103,39 +103,39 @@ function App(){
       <Stack.Screen 
         name="Menu" 
         component={Dashboard} 
-        options={{
-          headerRight: () => (
-            <View style={styles.headerRightContainer}>
-              <TouchableOpacity onPress={() => setOpenDropdown(!openDropdown)}>
-                <Image
-                  source={require('./images/profile.png')} // Use require for local images
-                  style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
-                />
-                <Text><strong>Jondy</strong></Text>
-              </TouchableOpacity>
-              {openDropdown && (
-                <DropDownPicker
-                  open={openDropdown}
-                  value={dropdownValue}
-                  items={dropdownItems}
-                  setOpen={setOpenDropdown}
-                  setValue={setDropdownValue}
-                  setItems={setDropdownItems}
-                  containerStyle={styles.dropdownContainer}
-                  style={styles.dropdown}
-                  onChangeValue={handleDropdownChange}
+        // options={{
+        //   headerRight: () => (
+        //     <View style={styles.headerRightContainer}>
+        //       <TouchableOpacity onPress={() => setOpenDropdown(!openDropdown)}>
+        //         <Image
+        //           source={require('./images/profile.png')} // Use require for local images
+        //           style={{ width: 40, height: 40, borderRadius: 20, marginRight: 10 }}
+        //         />
+        //         <Text><strong>Jondy</strong></Text>
+        //       </TouchableOpacity>
+        //       {openDropdown && (
+        //         <DropDownPicker
+        //           open={openDropdown}
+        //           value={dropdownValue}
+        //           items={dropdownItems}
+        //           setOpen={setOpenDropdown}
+        //           setValue={setDropdownValue}
+        //           setItems={setDropdownItems}
+        //           containerStyle={styles.dropdownContainer}
+        //           style={styles.dropdown}
+        //           onChangeValue={handleDropdownChange}
                   
-                />
-              )}
+        //         />
+        //       )}
               
-            </View>
-          ),
-          headerStyle: {
-            height: 100,
-            shadowColor: '#000',
-            elevation: 25,
-          },
-        }}
+        //     </View>
+        //   ),
+        //   headerStyle: {
+        //     height: 100,
+        //     shadowColor: '#000',
+        //     elevation: 25,
+        //   },
+        // }}
       />
       
     </Stack.Navigator>
