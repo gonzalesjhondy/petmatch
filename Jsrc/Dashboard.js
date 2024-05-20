@@ -1,6 +1,9 @@
+import 'react-native-gesture-handler';
 import { Text, StyleSheet, SafeAreaView, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../Config';
+
+
 
 const Dashboard = () => {
     const [name, setName] = useState('');
@@ -30,10 +33,11 @@ const Dashboard = () => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <Image
+                {/* <Image
                     source={require('../images/profile.png')} // replace with your profile image URL
                     style={styles.profileImage}
-                />
+                /> */}
+                {/* <Ionicons name="menu" size={24} color="black" style={styles.sidebarIcon} onPress={() => navigation.openDrawer()} /> */}
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Search your favorite pet..."
@@ -67,11 +71,20 @@ const Dashboard = () => {
                     <Text style={styles.petName}>Jhon Doe</Text>
                     <Text style={styles.petDistance}>Distance (Near 5km)</Text>
                 </View>
+                <View style={styles.petCard}>
+                    <Image
+                        source={require('../images/dog2.jpg')}  // replace with your pet image URL
+                        style={styles.petImage}
+                    />
+                    <Text style={styles.petName}>Jhon Doe</Text>
+                    <Text style={styles.petDistance}>Distance (Near 5km)</Text>
+                </View>
                 {/* Add more pet cards as needed */}
             </ScrollView>
         </SafeAreaView>
     );
 };
+ 
 
 export default Dashboard;
 
@@ -84,6 +97,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,
+        backgroundColor: '#f8f8f8',
     },
     profileImage: {
         width: 40,
@@ -91,14 +105,18 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         marginRight: 12,
     },
+    sidebarIcon: {
+        marginRight: 10,
+    },
     searchInput: {
         flex: 1,
         height: 40,
-        borderColor: 'gray',
+        borderColor: '#ddd',
         borderWidth: 1,
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        backgroundColor: '#F0F0F0',
+        borderRadius: 8,
+        // paddingHorizontal: 10,
+        // backgroundColor: '#F0F0F0',
+        paddingLeft: 10,
     },
     categoryTitle: {
         fontSize: 18,
@@ -111,13 +129,14 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     categoryItem: {
-        padding: 12,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
+        padding: 16,
+        borderRadius: 8,
+        // justifyContent: 'center',
+        // alignItems: 'center',
     },
     petList: {
-        alignItems: 'center',
+        // alignItems: 'center',
+        padding: 16,
     },
     petCard: {
         backgroundColor: '#FFF',
@@ -148,4 +167,5 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#888',
     },
+
 });
