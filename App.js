@@ -1,9 +1,9 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import React, {useState, useEffect} from 'react';
-import { Image, Text, View ,TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet } from 'react-native';
 import { firebase } from "./Config";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -11,20 +11,82 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { Ionicons } from '@expo/vector-icons';
 
 import Login from "./Jsrc/Login";
+// import Logout from "./profile/Logout";
+
 import Register from "./Jsrc/Register";
 import Dashboard from "./Jsrc/Dashboard";
 import Header from "./component/Header";
+import Postpet from "./pet/postpet";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
+const CustomDrawerContent = (props) => {
+  const handleSignOut = () => {
+    console.log("Signing out...");
+    firebase.auth().signOut().then(() => {
+      alert("Signed out successfully");
+      props.navigation.replace('Login');  // Navigate to login screen after logout
+    }).catch((error) => {
+      alert(error.message);
+    });
+  };
+
+  const confirmLogout = () => {
+    console.log('logout pressed');
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {
+            console.log('Logout cancelled');
+            Alert.alert('Cancel Pressed');
+          },
+          style: 'cancel'
+        },
+        {
+          text: 'Logout',
+          onPress: () => {
+            console.log('Logout confirmed');
+            handleSignOut();
+          }
+        }
+      ],
+      {
+        cancelable: true,
+        onDismiss: () =>
+          Alert.alert('This alert was dismissed by tapping outside of the alert dialog.')
+      }
+    );
+  };
+
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Logout"
+        icon={({ color, size }) => (
+          <Ionicons name="log-out-outline" color={color} size={size} />
+        )}
+        onPress={confirmLogout}
+      />
+    </DrawerContentScrollView>
+  );
+};
+
 
 function DrawerNavigator() {
   return (
-    <Drawer.Navigator initialRouteName="Dashboard">
-      <Drawer.Screen name="Dashboard" component={Dashboard} />
-      {/* Add other screens here */}
 
+    <Drawer.Navigator initialRouteName="Dashboard"
+    drawerContent={(props) => <CustomDrawerContent {...props} />}
+    >
+      <Drawer.Screen name="Dashboard" component={Dashboard} />
+      <Drawer.Screen name="PostPet" component={Postpet}/>
+      {/* <Drawer.Screen name="Logout" component={Logout}/> */}
+      {/* Add other screens here */}
     </Drawer.Navigator>
   );
 }
@@ -50,15 +112,15 @@ function AppStack(){
     }
   }, [dropdownValue]);
 
-  const handleSignOut = () => {
-    firebase.auth().signOut().then(() => {
-      alert("Signed out successfully");
-    }).catch((error) => {
-      alert(error.message);
-    });
-    console.log("Logout selected, triggering handleSignOut");
-    setLogoutTrigger(true);
-  };
+  // const handleSignOut = () => {
+  //   firebase.auth().signOut().then(() => {
+  //     alert("Signed out successfully");
+  //   }).catch((error) => {
+  //     alert(error.message);
+  //   });
+  //   console.log("Logout selected, triggering handleSignOut");
+  //   setLogoutTrigger(true);
+  // };
 
   const handleDropdownChange = (value) => {
     setDropdownValue(value);
