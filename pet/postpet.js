@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Picker } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Picker, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { firestore, storage, firebase } from '../Config';
+
 
 const PostPet = () => {
   const [petName, setPetName] = useState('');
@@ -9,6 +12,8 @@ const PostPet = () => {
   const [LocationFound, setLocationFound] = useState('');
   const [sex, setSex] = useState('');
   const [age, setAge] = useState('');
+  const [category, setcategory] = useState('');
+  const [color, setcolor] = useState('');
   const [breed, setBreed] = useState('');
   const [weight, setWeight] = useState('');
   const [aboutPet, setAboutPet] = useState('');
@@ -21,23 +26,69 @@ const PostPet = () => {
       quality: 1,
     });
 
-    if (!result.cancelled) {
-      setPetImage(result.uri);
+    if (!result.cancelled && result.assets && result.assets.length > 0) {
+
+      const uri = result.assets[0].uri;
+      // console.log('Image URI:', result.assets);
+      // const localUri = await saveImageLocally(uri);
+      setPetImage(uri);
     }
   };
 
-  const handlePostPet = () => {
-    console.log({
-      petName,
-      petImage,
-      completeAddress,
-      LocationFound,
-      sex,
-      age,
-      breed,
-      weight,
-      aboutPet,
-    });
+  // const saveImageLocally = async (uri) => {
+  //   const filename = uri.split('/').pop();
+  //   const newPath = `${FileSystem.documentDirectory}${filename}`;
+  //   await FileSystem.copyAsync({ from: uri, to: newPath});
+  //   return newPath;
+  // }
+
+  const uploadImage = async (uri) => {
+
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = storage.ref().child(`images/${Date.now()}-${Math.random().toString(36).substr(2, 9)}`);
+    const snapshot = await ref.put(blob);
+    const downloadURL = await snapshot.ref.getDownloadURL();
+    return downloadURL;  
+
+  };
+
+  const handlePostPet = async () => {
+    try {
+      const imageURL = await uploadImage(petImage)
+
+      await firestore.collection('pets').add({
+        
+        petName,
+        completeAddress,
+        LocationFound,
+        sex,
+        age,
+        category,
+        color,
+        breed,
+        weight,
+        aboutPet,
+        petImage: imageURL,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
+      Alert.alert('Success', 'Pet posted for adoption');
+      // Clear state after successful post
+      setPetName('');
+      setPetImage(null);
+      setCompleteAddress('');
+      setLocationFound('');
+      setSex('');
+      setAge('');
+      setcolor('');
+      setBreed('');
+      setWeight('');
+      setAboutPet('');
+    } catch (error) {
+      Alert.alert('Error', 'Failed to post pet for adoption');
+      console.error(error);
+    }
+    
   };
 
   return (
@@ -74,6 +125,15 @@ const PostPet = () => {
         <Picker.Item label="Male" value="Male" />
         <Picker.Item label="Female" value="Female" />
       </Picker>
+      <Picker
+        selectedValue={category}
+        style={styles.input}
+        onValueChange={(itemValue) => setcategory(itemValue)}
+      >
+        <Picker.Item label="Select Category" value="" />
+        <Picker.Item label="Dog" value="Dog" />
+        <Picker.Item label="Cat" value="Cat" />
+      </Picker>
 
       <TextInput
         style={styles.input}
@@ -82,6 +142,14 @@ const PostPet = () => {
         onChangeText={setAge}
         keyboardType="numeric"
       />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Color"
+        value={color}
+        onChangeText={setcolor}
+      />
+
 
       <TextInput
         style={styles.input}
