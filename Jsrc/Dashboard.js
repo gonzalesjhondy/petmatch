@@ -2,14 +2,14 @@ import 'react-native-gesture-handler';
 import { Text, StyleSheet, SafeAreaView, View, TextInput, TouchableOpacity, ScrollView, Image } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { firebase, firestore } from '../Config';
-
+import { useNavigation } from '@react-navigation/native';
 
 
 const Dashboard = () => {
 
     const [petData, setPetData] = useState([]);
     const [petcategory, setPetCategory] = useState(null);
-
+    const navigation = useNavigation();
     useEffect(() => {
         fetchPetsData();
     }, [petcategory]);
@@ -20,7 +20,11 @@ const Dashboard = () => {
             console.log('PetsRef', PetsRef);
             let query = PetsRef;
             if(petcategory){
-                query = query.where('category', '==', petcategory)
+                if(petcategory === 'All'){
+                    query = query.where('category', 'in', ['Dog', 'Cat']);
+                }else{
+                    query = query.where('category', '==', petcategory);
+                }
             }
             
             const snapshot = await query.get();
@@ -84,19 +88,31 @@ const Dashboard = () => {
                 >
                     <Text>Cats</Text>
                 </TouchableOpacity>
+
+                <TouchableOpacity style={[styles.categoryItem, petcategory === 'All' && { backgroundColor: '#D3D3D3' }]}
+                    onPress={() => setPetCategory('All')}
+                >
+                    <Text>All</Text>
+                </TouchableOpacity>
             </View>
 
             <ScrollView contentContainerStyle={styles.petList}>
                 {petData.map((pet, index) =>(
 
-                    <View key={index} style={styles.petCard}>
+                    // <View key={index} style={styles.petCard}>
+                    <TouchableOpacity key={index}
+                    style={styles.petCard}
+                    onPress={() => navigation.navigate('PetDetails', { pet } )}
+                    >
                         <Image
                             source={{ uri: pet.petImage}} // replace with your pet image URL
                             style={styles.petImage}
                         />
                         <Text style={styles.petName}>{pet.petName}</Text>
-                        <Text style={styles.petDistance}>Age:{pet.age}</Text>
-                    </View>
+                        <Text style={styles.petDistance}>Age: {pet.age}</Text>
+                        <Text style={styles.petDistance}>Location Found: {pet.LocationFound}</Text>
+                    </TouchableOpacity>
+                    // </View>
 
                 ))}
                 {/* <View style={styles.petCard}>

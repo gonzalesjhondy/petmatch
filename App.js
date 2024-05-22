@@ -18,6 +18,7 @@ import Dashboard from "./Jsrc/Dashboard";
 import Header from "./component/Header";
 import Postpet from "./pet/postpet";
 import Petsection from "./pet/petsection"
+import PetDetails from './pet/petdetails';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,6 +36,7 @@ const CustomDrawerContent = (props) => {
 
   const confirmLogout = () => {
     console.log('logout pressed');
+    handleSignOut();
     Alert.alert(
       'Logout',
       'Are you sure you want to logout?',
@@ -83,15 +85,15 @@ function DrawerNavigator() {
     <Drawer.Navigator initialRouteName="Dashboard"
     drawerContent={(props) => <CustomDrawerContent {...props} />}
     drawerStyle={{
-      backgroundColor: '#F8F8F8', // Set default background color of the drawer
+      backgroundColor: '#F8F8F8', 
       width: 240,
     }}
     screenOptions={{
       headerShown: true,
-      drawerActiveTintColor: '#FFFFFF', // Set text color when active
-      drawerActiveBackgroundColor: '#2086FF', // Set background color when active
-      drawerInactiveTintColor: '#2086FF', // Set text color when inactive
-      drawerInactiveBackgroundColor: 'transparent', // Set background color when inactive
+      drawerActiveTintColor: '#FFFFFF', 
+      drawerActiveBackgroundColor: '#2086FF', 
+      drawerInactiveTintColor: '#2086FF', 
+      drawerInactiveBackgroundColor: 'transparent', 
     }}
     >
       <Drawer.Screen 
@@ -99,17 +101,17 @@ function DrawerNavigator() {
         component={Dashboard} 
         options={{
           drawerStyle: {
-            borderTopWidth: 0, // Adjust border size as needed
-            borderTopColor: 'gray', // Adjust border color as needed
-            backgroundColor: '#FFFFFF', // Adjust background color as needed
-            height: 200, // Adjust height as needed
+            borderTopWidth: 0, 
+            borderTopColor: 'gray', 
+            backgroundColor: '#FFFFFF', 
+            height: 300, 
           },
           headerStyle: {backgroundColor: '#2086FF'}, 
           headerTintColor: '#fff', 
           headerTitle: 'Dashboard',
           headerRight: () => (
             <Image 
-              source={require('./images/pet_logo2.png')} // Replace with your image path
+              source={require('./images/pet_logo2.png')} 
               style={styles.headerImage}
             />
           ),
@@ -120,17 +122,17 @@ function DrawerNavigator() {
         component={Postpet} 
         options={{
            drawerStyle: {
-            borderTopWidth: 0, // Adjust border size as needed
-            borderTopColor: 'gray', // Adjust border color as needed
-            backgroundColor: '#FFFFFF', // Adjust background color as needed
-            height: 200, // Adjust height as needed
+            borderTopWidth: 0, 
+            borderTopColor: 'gray', 
+            backgroundColor: '#FFFFFF', 
+            height: 300, 
           },
           headerStyle: {backgroundColor: '#2086FF'}, 
           headerTintColor: '#fff',
           headerTitle: 'PostPet',
           headerRight: () => (
             <Image 
-              source={require('./images/pet_logo2.png')} // Replace with your image path
+              source={require('./images/pet_logo2.png')}
               style={styles.headerImage}
             />
           ),
@@ -139,6 +141,28 @@ function DrawerNavigator() {
       <Drawer.Screen 
         name="Petsection"
         component={Petsection} 
+        options={{
+           drawerStyle: {
+            borderTopWidth: 0, 
+            borderTopColor: 'gray', 
+            backgroundColor: '#FFFFFF',
+            height: 300, 
+          },
+          headerStyle: {backgroundColor: '#2086FF'}, 
+          headerTintColor: '#fff',
+          headerTitle: 'PostPet',
+          headerRight: () => (
+            <Image 
+              source={require('./images/pet_logo2.png')} 
+              style={styles.headerImage}
+            />
+          ),
+        }}
+      />
+
+      {/* <Drawer.Screen 
+        name="Petdetails"
+        component={PetDetails} 
         options={{
            drawerStyle: {
             borderTopWidth: 0, // Adjust border size as needed
@@ -156,7 +180,7 @@ function DrawerNavigator() {
             />
           ),
         }}
-      />
+      /> */}
       {/* <Drawer.Screen name="Logout" component={Logout}/> */}
       {/* Add other screens here */}
     </Drawer.Navigator>
@@ -254,6 +278,25 @@ function AppStack(){
         name="Menu" 
         component={DrawerNavigator} 
         options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="PetDetails" 
+        component={PetDetails} 
+        options={{
+           drawerStyle: {
+            borderTopWidth: 0, // Adjust border size as needed
+            borderTopColor: 'gray', // Adjust border color as needed
+            backgroundColor: '#FFFFFF', // Adjust background color as needed
+            height: 300, // Adjust height as needed
+          },
+          headerStyle: {backgroundColor: '#2086FF'}, 
+          headerTintColor: '#fff',
+          headerTitle: 'PostPet',
+          headerRight: () => (
+            <Image 
+              source={require('./images/pet_logo2.png')} // Replace with your image path
+              style={styles.headerImage}
+            />) }}
       />
     </Stack.Navigator>
   );
