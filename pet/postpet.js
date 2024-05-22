@@ -3,9 +3,11 @@ import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView, Picker, A
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { firestore, storage, firebase } from '../Config';
-
+import { useNavigation } from '@react-navigation/native';
 
 const PostPet = () => {
+  const navigation = useNavigation();
+
   const [petName, setPetName] = useState('');
   const [petImage, setPetImage] = useState(null);
   const [completeAddress, setCompleteAddress] = useState('');
@@ -84,6 +86,8 @@ const PostPet = () => {
       setBreed('');
       setWeight('');
       setAboutPet('');
+
+      navigation.navigate('Petsection');
     } catch (error) {
       Alert.alert('Error', 'Failed to post pet for adoption');
       console.error(error);

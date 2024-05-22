@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator,DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import React, {useState, useEffect} from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet, Image } from 'react-native';
 import { firebase } from "./Config";
 
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -17,6 +17,7 @@ import Register from "./Jsrc/Register";
 import Dashboard from "./Jsrc/Dashboard";
 import Header from "./component/Header";
 import Postpet from "./pet/postpet";
+import Petsection from "./pet/petsection"
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -79,12 +80,83 @@ const CustomDrawerContent = (props) => {
 
 function DrawerNavigator() {
   return (
-
     <Drawer.Navigator initialRouteName="Dashboard"
     drawerContent={(props) => <CustomDrawerContent {...props} />}
+    drawerStyle={{
+      backgroundColor: '#F8F8F8', // Set default background color of the drawer
+      width: 240,
+    }}
+    screenOptions={{
+      headerShown: true,
+      drawerActiveTintColor: '#FFFFFF', // Set text color when active
+      drawerActiveBackgroundColor: '#2086FF', // Set background color when active
+      drawerInactiveTintColor: '#2086FF', // Set text color when inactive
+      drawerInactiveBackgroundColor: 'transparent', // Set background color when inactive
+    }}
     >
-      <Drawer.Screen name="Dashboard" component={Dashboard} />
-      <Drawer.Screen name="PostPet" component={Postpet}/>
+      <Drawer.Screen 
+        name="Dashboard" 
+        component={Dashboard} 
+        options={{
+          drawerStyle: {
+            borderTopWidth: 0, // Adjust border size as needed
+            borderTopColor: 'gray', // Adjust border color as needed
+            backgroundColor: '#FFFFFF', // Adjust background color as needed
+            height: 200, // Adjust height as needed
+          },
+          headerStyle: {backgroundColor: '#2086FF'}, 
+          headerTintColor: '#fff', 
+          headerTitle: 'Dashboard',
+          headerRight: () => (
+            <Image 
+              source={require('./images/pet_logo2.png')} // Replace with your image path
+              style={styles.headerImage}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="PostPet" 
+        component={Postpet} 
+        options={{
+           drawerStyle: {
+            borderTopWidth: 0, // Adjust border size as needed
+            borderTopColor: 'gray', // Adjust border color as needed
+            backgroundColor: '#FFFFFF', // Adjust background color as needed
+            height: 200, // Adjust height as needed
+          },
+          headerStyle: {backgroundColor: '#2086FF'}, 
+          headerTintColor: '#fff',
+          headerTitle: 'PostPet',
+          headerRight: () => (
+            <Image 
+              source={require('./images/pet_logo2.png')} // Replace with your image path
+              style={styles.headerImage}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name="Petsection"
+        component={Petsection} 
+        options={{
+           drawerStyle: {
+            borderTopWidth: 0, // Adjust border size as needed
+            borderTopColor: 'gray', // Adjust border color as needed
+            backgroundColor: '#FFFFFF', // Adjust background color as needed
+            height: 200, // Adjust height as needed
+          },
+          headerStyle: {backgroundColor: '#2086FF'}, 
+          headerTintColor: '#fff',
+          headerTitle: 'PostPet',
+          headerRight: () => (
+            <Image 
+              source={require('./images/pet_logo2.png')} // Replace with your image path
+              style={styles.headerImage}
+            />
+          ),
+        }}
+      />
       {/* <Drawer.Screen name="Logout" component={Logout}/> */}
       {/* Add other screens here */}
     </Drawer.Navigator>
@@ -171,6 +243,7 @@ function AppStack(){
             }
           }}
         />
+
       </Stack.Navigator>
     );
   }
@@ -180,6 +253,57 @@ function AppStack(){
       <Stack.Screen 
         name="Menu" 
         component={DrawerNavigator} 
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+
+}
+
+const styles = StyleSheet.create({
+  headerRightContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 10,
+  },
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  dropdownContainer: {
+    width: 150,
+    marginTop: 10,
+  },
+  dropdown: {
+    backgroundColor: '#fafafa',
+  },
+
+ 
+  headerImage: {
+    width: 100,
+    height: 50,
+    marginRight: 10,
+    resizeMode: 'contain',
+  },
+});
+
+export default () => {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <NavigationContainer>
+        <AppStack />
+      </NavigationContainer>
+    </GestureHandlerRootView>
+  );
+}
+
+//  return (
+//     <Stack.Navigator>
+//       <Stack.Screen 
+//         name="Menu" 
+//         component={DrawerNavigator} 
         // options={{
         //   headerRight: () => (
         //     <View style={styles.headerRightContainer}>
@@ -213,41 +337,7 @@ function AppStack(){
         //     elevation: 25,
         //   },
         // }}
-      />
+  //     />
       
-    </Stack.Navigator>
-  );
-
-}
-
-const styles = StyleSheet.create({
-  headerRightContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginRight: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  dropdownContainer: {
-    width: 150,
-    marginTop: 10,
-  },
-  dropdown: {
-    backgroundColor: '#fafafa',
-  },
-});
-
-export default () => {
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <NavigationContainer>
-        <AppStack />
-      </NavigationContainer>
-    </GestureHandlerRootView>
-  );
-}
-
+  //   </Stack.Navigator>
+  // );
