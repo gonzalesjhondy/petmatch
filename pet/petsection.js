@@ -1,28 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity, TextInput, Button, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Modal from 'react-native-modal';
+import { firestore } from '../Config';
+import moment from 'moment';
 
-const posts = [
-  {
-    id: '1',
-    user: 'Lucas Mokmana',
-    location: 'Shibuya, Tokyo',
-    timestamp: '2m ago',
-    caption: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,..... 😎😎',
-    image: 'https://via.placeholder.com/400x200',
-    likes: 221,
-    comments: [
-      { id: '1', user: 'ariana_grandia', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed diam nonummy eirmod tempor invidunt ut labore' },
-      { id: '2', user: 'Emilia Tsui', text: 'Elitr sed diam nonumy eirmod tempor invidunt ut labore' },
-    ],
-  },
-  // Add more posts here
-];
 
 const Petsection = () => {
+  const [posts, setPosts] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
+
+  useEffect(() => {
+    const fetchPets = async () => {
+      const petDocs = await firestore.collection('pets').orderBy('createdAt', 'desc').get();
+      const userPromises = petDocs.docs.map(async petDoc => {
+        const petData = petDoc.data();
+        const userDoc = await firestore.collection('users').doc(petData.userId).get();;
+        const userData = userDoc.data();
+        console.log("Pet data", userDoc);
+
+        return {
+          id:petDoc.id,
+          user: userData.firstname,
+          timestamp: moment(petData.createdAt.toDate()).fromNow(),
+          about: petData.aboutPet,
+          image: petData.petImage,
+          location: petData.LocationFound
+        };
+      });
+      const postsData = await Promise.all(userPromises);
+      setPosts(postsData);
+    }
+    fetchPets();
+
+    
+  }, []);
 
   const handleLike = (postId) => {
     const updatedPosts = posts.map(post => {
@@ -32,6 +45,7 @@ const Petsection = () => {
       return post;
     });
     // update state with new posts array
+    setPosts(updatedPosts);
   };
 
   const handleComment = (post) => {
@@ -43,18 +57,18 @@ const Petsection = () => {
     
     <View style={styles.postContainer}>
       <Text style={styles.userName}>{item.user}</Text>
-      <Text style={styles.location}>{item.location}</Text>
+      {/* <Text style={styles.location}>{item.location}</Text> */}
       <Text style={styles.timestamp}>{item.timestamp}</Text>
-      <Text style={styles.caption}>{item.caption}</Text>
+      <Text style={styles.caption}>{item.about}, location found at <strong>{item.location}</strong></Text>
       <Image source={{ uri: item.image }} style={styles.image} />
       <View style={styles.actions}>
         <TouchableOpacity onPress={() => handleLike(item.id)} style={styles.actionButton}>
           <Icon name="heart" size={20} color="#e91e63" />
-          <Text style={styles.actionText}>{item.likes}</Text>
+          <Text style={styles.actionText}>{item.likes || 0}</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => handleComment(item)} style={styles.actionButton}>
           <Icon name="comment" size={20} color="#3b5998" />
-          <Text style={styles.actionText}>{item.comments.length}</Text>
+          <Text style={styles.actionText}>{item.comments ? item.comments.length : 0}</Text>
         </TouchableOpacity>
       </View>
     </View>

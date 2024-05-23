@@ -9,10 +9,11 @@ const Dashboard = () => {
 
     const [petData, setPetData] = useState([]);
     const [petcategory, setPetCategory] = useState(null);
+    const [searchKeyword, setSearchKeyword] = useState('');
     const navigation = useNavigation();
     useEffect(() => {
         fetchPetsData();
-    }, [petcategory]);
+    }, [petcategory, searchKeyword]);
     
     const fetchPetsData = async () => {
         try{
@@ -29,7 +30,7 @@ const Dashboard = () => {
             
             const snapshot = await query.get();
             // const data = snapshot.docs.map(doc => doc.data());
-            const data = await Promise.all(snapshot.docs.map(async (doc) => {
+            let data = await Promise.all(snapshot.docs.map(async (doc) => {
                 const pet = doc.data();
                 const userRef = firestore.collection('users').doc(pet.userId);
                 const userSnapshot = await userRef.get();
@@ -37,7 +38,17 @@ const Dashboard = () => {
                 console.log('userdata', userData);
                 return { ...pet, userName: userData ? userData.firstname : 'Unknown' }
             }));
-            console.log('data', data);
+
+            if(searchKeyword){
+                const keywordlower = searchKeyword.toLowerCase();
+                data = data.filter(pet =>
+                    pet.petName.toLowerCase().includes(keywordlower) ||
+                    pet.breed.toLowerCase().includes(keywordlower) ||
+                    pet.userName.toLowerCase().includes(keywordlower) ||
+                    pet.category.toLowerCase().includes(keywordlower)
+                );
+            }
+
             setPetData(data);
         } catch (error){
             console.error('Error fetching data:', error);
@@ -56,6 +67,8 @@ const Dashboard = () => {
                 <TextInput
                     style={styles.searchInput}
                     placeholder="Search your favorite pet..."
+                    value={searchKeyword}
+                    onChangeText={text => setSearchKeyword(text)}
                 />
             </View>
 

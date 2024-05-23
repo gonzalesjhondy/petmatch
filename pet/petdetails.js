@@ -47,7 +47,7 @@ const PetDetails = ({ route }) => {
                 </View>
 
                 <Text style={styles.aboutTitle}>About Pet</Text>
-                <Text style={styles.aboutText}>{pet.aboutPet}</Text>
+                <Text style={styles.aboutText}>{pet.aboutPet}, location found at <strong>{pet.LocationFound}</strong></Text>
             </ScrollView>
         </SafeAreaView>
     );
