@@ -28,37 +28,22 @@ const Dashboard = () => {
             }
             
             const snapshot = await query.get();
-            const data = snapshot.docs.map(doc => doc.data());
+            // const data = snapshot.docs.map(doc => doc.data());
+            const data = await Promise.all(snapshot.docs.map(async (doc) => {
+                const pet = doc.data();
+                const userRef = firestore.collection('users').doc(pet.userId);
+                const userSnapshot = await userRef.get();
+                const userData = userSnapshot.data();
+                console.log('userdata', userData);
+                return { ...pet, userName: userData ? userData.firstname : 'Unknown' }
+            }));
+            console.log('data', data);
             setPetData(data);
         } catch (error){
             console.error('Error fetching data:', error);
         }
 
     };
-    // const [name, setName] = useState('');
-    //change the password
-    // const changePassword = () => {
-    //     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
-    //         .then(() => {
-    //             alert("Password Reset email sent");
-    //         }).catch((error) => {
-    //             alert(error);
-    //         });
-    // }
-
-    // useEffect(() => {
-    //     firebase.firestore().collection('users')
-    //         .doc(firebase.auth().currentUser.uid).get()
-    //         .then((snapshot) => {
-    //             if (snapshot.exists) {
-    //                 setName(snapshot.data());
-    //             } else {
-    //                 console.log('user does not exist');
-    //             }
-    //         });
-    // }, []);
-
-
 
     return (
         <SafeAreaView style={styles.container}>
@@ -110,28 +95,13 @@ const Dashboard = () => {
                         />
                         <Text style={styles.petName}>{pet.petName}</Text>
                         <Text style={styles.petDistance}>Age: {pet.age}</Text>
+                        <Text style={styles.petDistance}>Posted by: {pet.userName}</Text>
                         <Text style={styles.petDistance}>Location Found: {pet.LocationFound}</Text>
                     </TouchableOpacity>
                     // </View>
 
                 ))}
-                {/* <View style={styles.petCard}>
-                    <Image
-                        source={require('../images/dog2.jpg')}  // replace with your pet image URL
-                        style={styles.petImage}
-                    />
-                    <Text style={styles.petName}>Jhon Doe</Text>
-                    <Text style={styles.petDistance}>Distance (Near 5km)</Text>
-                </View>
-                <View style={styles.petCard}>
-                    <Image
-                        source={require('../images/dog2.jpg')}  // replace with your pet image URL
-                        style={styles.petImage}
-                    />
-                    <Text style={styles.petName}>Jhon Doe</Text>
-                    <Text style={styles.petDistance}>Distance (Near 5km)</Text>
-                </View> */}
-                {/* Add more pet cards as needed */}
+               
             </ScrollView>
         </SafeAreaView>
     );
@@ -223,3 +193,43 @@ const styles = StyleSheet.create({
     },
 
 });
+
+// const [name, setName] = useState('');
+    //change the password
+    // const changePassword = () => {
+    //     firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email)
+    //         .then(() => {
+    //             alert("Password Reset email sent");
+    //         }).catch((error) => {
+    //             alert(error);
+    //         });
+    // }
+
+    // useEffect(() => {
+    //     firebase.firestore().collection('users')
+    //         .doc(firebase.auth().currentUser.uid).get()
+    //         .then((snapshot) => {
+    //             if (snapshot.exists) {
+    //                 setName(snapshot.data());
+    //             } else {
+    //                 console.log('user does not exist');
+    //             }
+    //         });
+    // }, []);
+ {/* <View style={styles.petCard}>
+                    <Image
+                        source={require('../images/dog2.jpg')}  // replace with your pet image URL
+                        style={styles.petImage}
+                    />
+                    <Text style={styles.petName}>Jhon Doe</Text>
+                    <Text style={styles.petDistance}>Distance (Near 5km)</Text>
+                </View>
+                <View style={styles.petCard}>
+                    <Image
+                        source={require('../images/dog2.jpg')}  // replace with your pet image URL
+                        style={styles.petImage}
+                    />
+                    <Text style={styles.petName}>Jhon Doe</Text>
+                    <Text style={styles.petDistance}>Distance (Near 5km)</Text>
+                </View> */}
+                {/* Add more pet cards as needed */}

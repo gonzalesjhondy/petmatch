@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet, SafeAreaView, View, Image, ScrollView, Dimensions } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const { width } = Dimensions.get('window');
 
@@ -9,7 +10,7 @@ const PetDetails = ({ route }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                <Text style={styles.header}>Pet Details</Text>
+                <Text style={styles.header}>Pet Details</Text>  
                 <Image source={{ uri: pet.petImage }} style={styles.petImage} />
                 <Text style={styles.petName}>{pet.petName}</Text>
                 <Text style={styles.address}>{pet.completeAddress}</Text>
@@ -34,10 +35,14 @@ const PetDetails = ({ route }) => {
                 </View>
                 
                 <View style={styles.ownerContainer}>
-                    <Image source={{ uri: pet.ownerImage }} style={styles.ownerImage} />
-                    <View>
-                        <Text style={styles.ownerName}>{pet.ownerName}</Text>
-                        <Text style={styles.ownerRole}>Author:</Text>
+                      {/* <Image source={{ uri: pet.ownerImage }} style={styles.ownerImage} /> */}
+                    <Image source={require('../images/profile.png')} style={styles.ownerImage} />
+                    <View style={styles.ownerDetails}>
+                        <View style={styles.ownerRoleContainer}>
+                            <Text style={styles.ownerRole}>posted By:</Text>
+                            <Text style={styles.ownerName}>{pet.userName}</Text>
+                            <Icon name="message" size={20} color="#777" style={styles.messageIcon} />
+                        </View>
                     </View>
                 </View>
 
@@ -84,6 +89,7 @@ const styles = StyleSheet.create({
         marginRight: 16,
     },
     ownerName: { fontSize: 18, fontWeight: 'bold' },
+    messageIcon: { marginLeft: 4 },
     ownerRole: { fontSize: 16, color: '#777' },
     aboutTitle: { fontSize: 22, fontWeight: 'bold', marginTop: 20, marginBottom: 10 },
     aboutText: { fontSize: 16, textAlign: 'center' },

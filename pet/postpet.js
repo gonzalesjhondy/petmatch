@@ -57,10 +57,16 @@ const PostPet = () => {
 
   const handlePostPet = async () => {
     try {
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        throw new Error('User not authenticated');
+      }
+      const userId = user.uid;
+      console.log('user', user.uid);
       const imageURL = await uploadImage(petImage)
 
       await firestore.collection('pets').add({
-        
+        userId,
         petName,
         completeAddress,
         LocationFound,
